@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "813234600066",
+    "project_id": "legaldesk-8bed5",
+    "storage_bucket": "legaldesk-8bed5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813234600066:android:6c07daa621a889cbd31c9b",
+        "android_client_info": {
+          "package_name": "desk.file.legalsteward"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813234600066-v0f52s4do8fh4s087onjns095jofd6fu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "desk.file.legalsteward",
+            "certificate_hash": "08365b0c692d5d5bfc54e37177d0b5eb5be21bc2"
+          }
+        },
+        {
+          "client_id": "813234600066-6lblqnrtc8j6mu1a2kj3rrif7jcjj4cv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYk0Nl6xF8U6PyzRtkRjrLMMg96T8NH5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813234600066-6lblqnrtc8j6mu1a2kj3rrif7jcjj4cv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
