@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'controller.dart';
 
 class SplashView extends GetView<SplashController> {
@@ -53,7 +54,7 @@ class SplashView extends GetView<SplashController> {
               const SizedBox(height: 40),
               // App Title
               Text(
-                'Legal Desk',
+                'LegalDesk',
                 style: TextStyle(
                   fontFamily: 'poppins',
                   fontSize: 32,

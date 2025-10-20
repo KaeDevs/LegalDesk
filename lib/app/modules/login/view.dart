@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -39,7 +40,7 @@ class LoginView extends GetView<LoginController> {
                     const SizedBox(height: 32),
                     // App Title
                     Text(
-                      'Legal Desk',
+                      'LegalDesk',
                       style: TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 28,

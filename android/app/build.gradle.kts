@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,6 +8,13 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
 }
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 
 android {
     namespace = "com.example.legalsteward"
@@ -22,7 +32,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "desk.file.legalsteward"
+        applicationId = "my.legal.desk"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 23
@@ -31,13 +41,39 @@ android {
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
-        }
+    val storeFilePath = keystoreProperties["storeFile"]?.toString()
+    ?: throw GradleException("Missing 'storeFile' in key.properties")
+val storePassword = keystoreProperties["storePassword"]?.toString()
+    ?: throw GradleException("Missing 'storePassword' in key.properties")
+val keyAlias = keystoreProperties["keyAlias"]?.toString()
+    ?: throw GradleException("Missing 'keyAlias' in key.properties")
+val keyPassword = keystoreProperties["keyPassword"]?.toString()
+    ?: throw GradleException("Missing 'keyPassword' in key.properties")
+
+signingConfigs {
+    create("release") {
+        storeFile = file(storeFilePath)
+        this.storePassword = storePassword
+        this.keyAlias = keyAlias
+        this.keyPassword = keyPassword
     }
+}
+
+
+
+buildTypes {
+    getByName("release") {
+        isMinifyEnabled = true
+        isShrinkResources = true
+        signingConfig = signingConfigs.getByName("release")
+        
+        proguardFiles(
+            getDefaultProguardFile("proguard-android-optimize.txt"),
+            "proguard-rules.pro"
+        )
+    }
+}
+
 }
 
 dependencies {

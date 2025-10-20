@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:legalsteward/app/modules/ads/native_ads.dart';
 import 'package:legalsteward/app/modules/cases/controller.dart';
 
 import '../../data/models/case_model.dart';
@@ -17,6 +18,7 @@ class CasesView extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           '📁 All Cases',
@@ -35,31 +37,38 @@ class CasesView extends StatelessWidget {
           ),
         ),
         actions: [
-          Obx(() => IconButton(
-            icon: Icon(controller.showAdvancedFilters.value 
-                ? Icons.filter_list_off 
-                : Icons.filter_list),
-            onPressed: controller.toggleAdvancedFilters,
-          )),
+          Obx(
+            () => IconButton(
+              icon: Icon(
+                controller.showAdvancedFilters.value
+                    ? Icons.filter_list_off
+                    : Icons.filter_list,
+              ),
+              onPressed: controller.toggleAdvancedFilters,
+            ),
+          ),
           PopupMenuButton<String>(
             icon: const Icon(Icons.sort),
             onSelected: controller.updateSortBy,
             itemBuilder: (context) => controller.sortOptions.map((option) {
               return PopupMenuItem<String>(
                 value: option,
-                child: Obx(() => Row(
-                  children: [
-                    Text(option),
-                    const Spacer(),
-                    if (controller.sortBy.value == option) ...[
-                      Icon(controller.sortAscending.value 
-                          ? Icons.arrow_upward 
-                          : Icons.arrow_downward,
-                        size: 16,
-                      ),
+                child: Obx(
+                  () => Row(
+                    children: [
+                      Text(option),
+                      const Spacer(),
+                      if (controller.sortBy.value == option) ...[
+                        Icon(
+                          controller.sortAscending.value
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward,
+                          size: 16,
+                        ),
+                      ],
                     ],
-                  ],
-                )),
+                  ),
+                ),
               );
             }).toList(),
           ),
@@ -75,12 +84,14 @@ class CasesView extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Search cases, clients, courts...',
                 prefixIcon: const Icon(Icons.search),
-                suffixIcon: Obx(() => controller.searchQuery.value.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: controller.clearSearch,
-                      )
-                    : const SizedBox.shrink()),
+                suffixIcon: Obx(
+                  () => controller.searchQuery.value.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: controller.clearSearch,
+                        )
+                      : const SizedBox.shrink(),
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -91,66 +102,77 @@ class CasesView extends StatelessWidget {
           ),
 
           // Quick Stats
-          Obx(() => Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Showing ${controller.filteredCount} of ${controller.totalCases} cases',
-                  style: FontStyles.poppins(
-                    fontSize: 14,
-                    color: theme.textTheme.bodyMedium?.color,
+          Obx(
+            () => Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Showing ${controller.filteredCount} of ${controller.totalCases} cases',
+                    style: FontStyles.poppins(
+                      fontSize: 14,
+                      color: theme.textTheme.bodyMedium?.color,
+                    ),
                   ),
-                ),
-                if (controller.searchQuery.value.isNotEmpty ||
-                    controller.selectedStatus.value != 'All' ||
-                    controller.dateRange.value != null)
-                  TextButton(
-                    onPressed: controller.clearFilters,
-                    child: const Text('Clear Filters'),
-                  ),
-              ],
+                  if (controller.searchQuery.value.isNotEmpty ||
+                      controller.selectedStatus.value != 'All' ||
+                      controller.dateRange.value != null)
+                    TextButton(
+                      onPressed: controller.clearFilters,
+                      child: const Text('Clear Filters'),
+                    ),
+                ],
+              ),
             ),
-          )),
+          ),
 
           // Advanced Filters
-          Obx(() => AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            height: controller.showAdvancedFilters.value ? null : 0,
-            child: controller.showAdvancedFilters.value
-                ? _buildAdvancedFilters(controller, theme)
-                : const SizedBox.shrink(),
-          )),
+          Obx(
+            () => AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: controller.showAdvancedFilters.value ? null : 0,
+              child: controller.showAdvancedFilters.value
+                  ? _buildAdvancedFilters(controller, theme)
+                  : const SizedBox.shrink(),
+            ),
+          ),
 
           // Status Filter Chips
           Container(
             height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Obx(() => ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: controller.statusOptions.length,
-              itemBuilder: (context, index) {
-                final status = controller.statusOptions[index];
-                final isSelected = controller.selectedStatus.value == status;
-                final count = status == 'All' 
-                    ? controller.totalCases 
-                    : controller.casesByStatus[status] ?? 0;
-                
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: FilterChip(
-                    label: Text('$status ($count)'),
-                    selected: isSelected,
-                    onSelected: (_) => controller.updateStatusFilter(status),
-                    selectedColor: colorScheme.primary.withOpacity(0.2),
-                    checkmarkColor: colorScheme.primary,
-                  ),
-                );
-              },
-            )),
-          ),
+            child: Obx(
+              () => ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.statusOptions.length,
+                itemBuilder: (context, index) {
+                  final status = controller.statusOptions[index];
 
+                  // Move the isSelected check inside the Obx scope
+                  return Obx(() {
+                    final isSelected =
+                        controller.selectedStatus.value == status;
+                    final count = status == 'All'
+                        ? controller.totalCases
+                        : controller.casesByStatus[status] ?? 0;
+
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: FilterChip(
+                        label: Text('$status ($count)'),
+                        selected: isSelected,
+                        onSelected: (_) =>
+                            controller.updateStatusFilter(status),
+                        selectedColor: colorScheme.primary.withOpacity(0.2),
+                        checkmarkColor: colorScheme.primary,
+                      ),
+                    );
+                  });
+                },
+              ),
+            ),
+          ),
           // Cases List
           Expanded(
             child: ValueListenableBuilder(
@@ -158,22 +180,53 @@ class CasesView extends StatelessWidget {
               builder: (context, Box<CaseModel> box, _) {
                 return Obx(() {
                   final cases = controller.filteredCases;
-                  
+
                   if (controller.totalCases == 0) {
-                    return _buildEmptyState('No cases found.', 'Start by adding your first case');
-                  }
-                  
-                  if (cases.isEmpty) {
-                    return _buildEmptyState(
-                      'No cases match your search', 
-                      'Try adjusting your filters or search terms'
+                    return ListView(
+                      
+                      children: [
+                        _buildEmptyState(
+                          'No cases found.',
+                          'Start by adding your first case',
+                        ),
+                        NativeAdExample(),
+                        SizedBox(height: 150,)
+                      ],
                     );
                   }
 
+                  if (cases.isEmpty) {
+                    return ListView(
+                      
+                        children: [
+                          _buildEmptyState(
+                            'No cases match your search',
+                            'Try adjusting your filters or search terms',
+                          ),
+                          NativeAdExample(),
+                          SizedBox(height: 200,)
+                        ],
+                      )
+                    ;
+                  }
+
                   return ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     itemCount: cases.length,
                     itemBuilder: (context, index) {
+                      if (index == cases.length - 1) {
+                        final c = cases[index];
+                        return Column(
+                          children: [
+                            _buildCaseCard(c, theme, context),
+                            SizedBox(height: 10),
+                            NativeAdExample(),
+                          ],
+                        );
+                      }
                       final c = cases[index];
                       return _buildCaseCard(c, theme, context);
                     },
@@ -182,6 +235,7 @@ class CasesView extends StatelessWidget {
               },
             ),
           ),
+          SizedBox(height: 10),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -210,34 +264,38 @@ class CasesView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Date Range Filter
             Row(
               children: [
                 Expanded(
-                  child: Obx(() => OutlinedButton.icon(
-                    onPressed: () => _showDateRangePicker(controller),
-                    icon: const Icon(Icons.date_range),
-                    label: Text(
-                      controller.dateRange.value == null
-                          ? 'Select Date Range'
-                          : '${controller.dateRange.value!.start.day}/${controller.dateRange.value!.start.month} - ${controller.dateRange.value!.end.day}/${controller.dateRange.value!.end.month}',
-                      style: const TextStyle(fontSize: 12),
+                  child: Obx(
+                    () => OutlinedButton.icon(
+                      onPressed: () => _showDateRangePicker(controller),
+                      icon: const Icon(Icons.date_range),
+                      label: Text(
+                        controller.dateRange.value == null
+                            ? 'Select Date Range'
+                            : '${controller.dateRange.value!.start.day}/${controller.dateRange.value!.start.month} - ${controller.dateRange.value!.end.day}/${controller.dateRange.value!.end.month}',
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ),
-                  )),
+                  ),
                 ),
                 const SizedBox(width: 8),
-                Obx(() => controller.dateRange.value != null
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () => controller.updateDateRange(null),
-                      )
-                    : const SizedBox.shrink()),
+                Obx(
+                  () => controller.dateRange.value != null
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () => controller.updateDateRange(null),
+                        )
+                      : const SizedBox.shrink(),
+                ),
               ],
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // Quick Filter Buttons
             Wrap(
               spacing: 8,
@@ -267,7 +325,7 @@ class CasesView extends StatelessWidget {
       lastDate: DateTime(2030),
       initialDateRange: controller.dateRange.value,
     );
-    
+
     if (picked != null) {
       controller.updateDateRange(picked);
     }
@@ -278,11 +336,7 @@ class CasesView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.folder_open,
-            size: 64,
-            color: Colors.grey[400],
-          ),
+          Icon(Icons.folder_open, size: 64, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(
             title,
@@ -295,10 +349,7 @@ class CasesView extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             subtitle,
-            style: FontStyles.poppins(
-              fontSize: 14,
-              color: Colors.grey[500],
-            ),
+            style: FontStyles.poppins(fontSize: 14, color: Colors.grey[500]),
             textAlign: TextAlign.center,
           ),
         ],
@@ -334,20 +385,21 @@ class CasesView extends StatelessWidget {
                     ),
                   ),
                   // if(!c.nextHearing.isAfter(DateTime.now()) && c.status == 'Pending')
-                    Spacer(),
-                  if(c.nextHearing != null && !c.nextHearing!.isAfter(DateTime.now()) && c.status == 'Pending')
-                    Icon(Icons.warning, size: 16, color: theme.iconTheme.color)
-                  
+                  Spacer(),
+                  if (c.nextHearing != null &&
+                      !c.nextHearing!.isAfter(DateTime.now()) &&
+                      c.status == 'Pending')
+                    Icon(Icons.warning, size: 16, color: theme.iconTheme.color),
                 ],
               ),
               const SizedBox(height: 6),
               Row(
                 children: [
-                  Icon(Icons.person, size: 16, color: theme.iconTheme.color),
+                  Icon(Icons.numbers, size: 16, color: theme.iconTheme.color),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      c.clientName,
+                      c.registrationNo == "" ? "No Case.no " : c.registrationNo!,
                       style: FontStyles.poppins(
                         fontSize: 14,
                         color: theme.textTheme.bodyMedium!.color,
@@ -359,7 +411,11 @@ class CasesView extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.account_balance, size: 16, color: theme.iconTheme.color),
+                  Icon(
+                    Icons.account_balance,
+                    size: 16,
+                    color: theme.iconTheme.color,
+                  ),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
@@ -376,21 +432,30 @@ class CasesView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildStatusChip(c.status, theme.colorScheme, theme.colorScheme.inversePrimary, c),
-                  if(c.nextHearing != null)
-                  Row(  
-                    children: [
-                      Icon(Icons.calendar_month, size: 16, color: theme.iconTheme.color),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${c.nextHearing!.day}/${c.nextHearing!.month}/${c.nextHearing!.year}',
-                        style: FontStyles.poppins(
-                          fontSize: 13,
-                          color: theme.textTheme.bodySmall!.color,
-                        ),
-                      ),
-                    ],
+                  _buildStatusChip(
+                    c.status,
+                    theme.colorScheme,
+                    theme.colorScheme.inversePrimary,
+                    c,
                   ),
+                  if (c.nextHearing != null)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_month,
+                          size: 16,
+                          color: theme.iconTheme.color,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${c.nextHearing!.day}/${c.nextHearing!.month}/${c.nextHearing!.year}',
+                          style: FontStyles.poppins(
+                            fontSize: 13,
+                            color: theme.textTheme.bodySmall!.color,
+                          ),
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ],
@@ -400,7 +465,12 @@ class CasesView extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusChip(String status, ColorScheme scheme, Color color, CaseModel c) {
+  Widget _buildStatusChip(
+    String status,
+    ColorScheme scheme,
+    Color color,
+    CaseModel c,
+  ) {
     Color chipColor;
     switch (status) {
       case 'Closed':

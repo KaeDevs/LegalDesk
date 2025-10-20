@@ -154,7 +154,7 @@ class CaseDetailView extends StatelessWidget {
                   _buildEnhancedDetailRow(context, Icons.confirmation_number,
                       'SR No', caseData.srNo ?? 'Not specified'),
                   _buildEnhancedDetailRow(
-                      context, Icons.numbers, 'Court No', caseData.caseNo),
+                      context, Icons.numbers, 'Case/Registration No', caseData.registrationNo!),
                   _buildDateRow(context, Icons.app_registration,
                       'Registration Date', caseData.registrationDate),
                   _buildDateRow(context, Icons.file_upload, 'Filing Date',

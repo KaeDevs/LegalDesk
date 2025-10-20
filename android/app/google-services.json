@@ -14,11 +14,80 @@
       },
       "oauth_client": [
         {
-          "client_id": "813234600066-v0f52s4do8fh4s087onjns095jofd6fu.apps.googleusercontent.com",
+          "client_id": "813234600066-erbn0vl3r5l969aifespbn154q70bq95.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "desk.file.legalsteward",
+            "certificate_hash": "ca4dc87a13a13dace9a5406331f037bc24ffc4ac"
+          }
+        },
+        {
+          "client_id": "813234600066-h14jhd30tumj8oeltqhfdl2mctkn0k1o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "desk.file.legalsteward",
+            "certificate_hash": "3c7471b613cc54243f6c27b38b08b1fc86a3ce7c"
+          }
+        },
+        {
+          "client_id": "813234600066-6lblqnrtc8j6mu1a2kj3rrif7jcjj4cv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYk0Nl6xF8U6PyzRtkRjrLMMg96T8NH5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813234600066-6lblqnrtc8j6mu1a2kj3rrif7jcjj4cv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813234600066:android:e8cddccb51c8641dd31c9b",
+        "android_client_info": {
+          "package_name": "my.legal.desk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813234600066-0lsae1lc107mb97j0serb9c4admkhpp3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "my.legal.desk",
+            "certificate_hash": "9173bda49a20e6aaa769075bf9a08c317e6b5c67"
+          }
+        },
+        {
+          "client_id": "813234600066-ev69b9gh0h483uhmu8v57itq1gg6j1i5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "my.legal.desk",
             "certificate_hash": "08365b0c692d5d5bfc54e37177d0b5eb5be21bc2"
+          }
+        },
+        {
+          "client_id": "813234600066-mq8prnui1d5assdgoh0peg64iantv0ae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "my.legal.desk",
+            "certificate_hash": "ca4dc87a13a13dace9a5406331f037bc24ffc4ac"
+          }
+        },
+        {
+          "client_id": "813234600066-pv1emgg68gcgmeiam4oe2a2mjc66tgbr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "my.legal.desk",
+            "certificate_hash": "3c7471b613cc54243f6c27b38b08b1fc86a3ce7c"
           }
         },
         {

@@ -4,13 +4,23 @@ import 'package:hive/hive.dart';
 
 import '../../data/models/case_model.dart';
 
+// Extension for null-safe DateTime comparison
+extension DateTimeComparison on DateTime? {
+  int compareToNullable(DateTime? other) {
+    if (this == null && other == null) return 0;
+    if (this == null) return 1; // null values go to end
+    if (other == null) return -1; // null values go to end
+    return this!.compareTo(other);
+  }
+}
+
 class CasesController extends GetxController {
   final caseBox = Hive.box<CaseModel>('cases');
   
   // Search and filter observables
   final searchQuery = ''.obs;
-  final selectedStatus = 'All'.obs;
-  final sortBy = 'Title'.obs;
+  final selectedStatus = 'Pending'.obs;
+  final sortBy = 'Next Hearing'.obs;
   final sortAscending = true.obs;
   final showAdvancedFilters = false.obs;
   final dateRange = Rxn<DateTimeRange>();
@@ -19,7 +29,7 @@ class CasesController extends GetxController {
   final searchController = TextEditingController();
   
   // Options
-  final statusOptions = ['All', 'Pending', 'Closed', 'Disposed', 'Un Numbered'].obs;
+  final statusOptions = ['Pending', 'All',  'Closed', 'Disposed', 'Un Numbered'].obs;
   final sortOptions = ['Title', 'Client Name', 'Court', 'Next Hearing', 'Status'].obs;
   
   // Computed filtered cases
@@ -76,13 +86,14 @@ class CasesController extends GetxController {
 
       // Date range filter for next hearing
       bool matchesDateRange = dateRange.value == null ||
-          (c.nextHearing != null && c.nextHearing!.isAfter(dateRange.value!.start.subtract(const Duration(days: 1))) &&
+          (c.nextHearing != null && 
+           c.nextHearing!.isAfter(dateRange.value!.start.subtract(const Duration(days: 1))) &&
            c.nextHearing!.isBefore(dateRange.value!.end.add(const Duration(days: 1))));
 
       return matchesSearch && matchesStatus && matchesDateRange;
     }).toList().obs;
 
-    // Sort cases
+    // Sort cases with proper null handling
     filtered.sort((a, b) {
       int comparison = 0;
       switch (sortBy.value) {
@@ -96,7 +107,8 @@ class CasesController extends GetxController {
           comparison = a.court.compareTo(b.court);
           break;
         case 'Next Hearing':
-          comparison = a.nextHearing?.compareTo(b.nextHearing!) ?? 0;
+          // Using the extension method for clean null-safe comparison
+          comparison = a.nextHearing.compareToNullable(b.nextHearing);
           break;
         case 'Status':
           comparison = a.status.compareTo(b.status);
@@ -139,7 +151,7 @@ class CasesController extends GetxController {
     searchController.clear();
     searchQuery.value = '';
     selectedStatus.value = 'All';
-    sortBy.value = 'Title';
+    sortBy.value = 'Next Hearing'; // Changed from 'Title' to maintain consistency
     sortAscending.value = true;
     dateRange.value = null;
   }

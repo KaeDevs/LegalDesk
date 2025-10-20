@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:legalsteward/app/modules/ads/native_ads.dart';
+
 import '../../utils/font_styles.dart';
 
 class BillingOverviewView extends StatelessWidget {
@@ -66,6 +68,8 @@ class BillingOverviewView extends StatelessWidget {
             subtitle: "Generate and view invoices",
             onTap: () => Get.toNamed('/invoice-list'),
           ),
+          const SizedBox(height: 12),
+          NativeAdExample()
         ],
       ),
     );

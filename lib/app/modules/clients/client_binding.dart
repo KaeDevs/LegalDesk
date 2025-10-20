@@ -5,6 +5,6 @@ import 'controller.dart';
 class ClientBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ClientsController());
+    Get.put(() => ClientsController(), permanent: true);
   }
 }

@@ -5,6 +5,7 @@ import 'package:legalsteward/app/modules/clients/controller.dart';
 
 import '../../data/models/client_model.dart';
 import '../../utils/font_styles.dart';
+import '../ads/banner_ad_implement.dart';
 import 'add_client_view.dart';
 import 'client_detail_view.dart';
 
@@ -74,6 +75,9 @@ class ClientsView extends StatelessWidget {
       body: Column(
         children: [
           // Search Bar
+          //adhere
+          // RefreshableBannerAdWidget(adUnitId: 'ca-app-pub-3940256099942544/9214589741'),
+          RefreshableBannerAdWidget(adUnitId: 'ca-app-pub-4922359332193574/9863408883'),
           Container(
             padding: const EdgeInsets.all(16),
             child: TextField(

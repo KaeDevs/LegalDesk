@@ -16,6 +16,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../data/models/case_model.dart';
 import '../../data/models/client_model.dart';
 import '../../data/models/task_model.dart';
+import '../tasks/task_controller.dart';
 import '../tasks/task_detail_view.dart';
 import 'profile_page.dart';
 
@@ -157,7 +158,7 @@ class DashboardView extends GetView<DashBoardController> {
     final size = MediaQuery.of(context).size;
 
     // You can get the controller if you want, or just read directly from Hive here
-    // final taskController = Get.find<TaskController>();
+    final taskController = Get.find<TaskController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -384,8 +385,10 @@ class DashboardView extends GetView<DashBoardController> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  // Spacer(),a
-                  RefreshableBannerAdWidget(),
+                  // adhere
+                  // RefreshableBannerAdWidget(adUnitId: 'ca-app-pub-3940256099942544/9214589741'),
+                  RefreshableBannerAdWidget(adUnitId: 'ca-app-pub-4922359332193574/1199490813'),
+                  
                   const SizedBox(height: 42),
                 ],
               ),

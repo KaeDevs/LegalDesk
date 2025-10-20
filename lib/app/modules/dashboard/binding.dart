@@ -3,10 +3,13 @@
 import 'package:get/get.dart';
 import 'package:legalsteward/app/modules/dashboard/controller.dart';
 
+import '../tasks/task_controller.dart';
+
 class dashBoardBinding extends Bindings{
   @override
   void dependencies() {
     
-    Get.put(DashBoardController());
+    Get.put(DashBoardController(), permanent: true  );
+    Get.put(TaskController(), permanent: true);
   }
 }
